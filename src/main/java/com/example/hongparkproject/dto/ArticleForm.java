@@ -1,24 +1,15 @@
 package com.example.hongparkproject.dto;
 
 import com.example.hongparkproject.entity.Article;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
+@AllArgsConstructor
+@ToString
 public class ArticleForm {
 
     private String title;
     private String content;
-
-    public ArticleForm(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleForm{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 
     /**
      * Dto를 Entity로 변환해주는 메소드
