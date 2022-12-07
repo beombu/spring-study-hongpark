@@ -1,5 +1,7 @@
 package com.example.hongparkproject.dto;
 
+import com.example.hongparkproject.entity.Article;
+
 public class ArticleForm {
 
     private String title;
@@ -16,5 +18,13 @@ public class ArticleForm {
                 "title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    /**
+     * Dto를 Entity로 변환해주는 메소드
+     * @return
+     */
+    public Article toEntity() {
+        return new Article(null, title, content);
     }
 }
