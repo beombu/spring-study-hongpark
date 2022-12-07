@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -67,5 +68,46 @@ public class ArticleController {
 
         //3. 뷰 페이지를 설정!
         return "articles/index";
+    }
+
+    @GetMapping("/articles/{id}/edit")
+    public String edit(@PathVariable Long id, Model model){
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+
+        model.addAttribute("article", articleEntity);
+
+        return "articles/edit";
+    }
+
+    @PostMapping("/articles/update")
+    public String update(ArticleForm form){
+        log.info(form.toString());
+
+        Article articleEntity = form.toEntity();
+        log.info(articleEntity.toString());
+
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+
+        if (target != null) {
+            Article saved = articleRepository.save(articleEntity);
+            log.info(saved.toString());
+        }
+
+        return "redirect:/articles/" + articleEntity.getId();
+    }
+
+    @GetMapping("/articles/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes rttr) {//RedirectAttributes는 메시지 찍어줌
+        log.info("삭제 요청");
+
+        Article target = articleRepository.findById(id).orElse(null);
+        log.info(target.toString());
+
+        if (target != null) {
+            articleRepository.delete(target);
+            rttr.addFlashAttribute("mag", "삭제가 완료되었습니다."); //Flash : 휘발성!! 한번만쓰고 삭제
+        }
+
+        return "redirect:/articles";
     }
 }
